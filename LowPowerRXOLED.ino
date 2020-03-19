@@ -8,6 +8,13 @@ const int RFM_RST_PIN = 4;
 const int RFM_INT_PIN = 3;
 const int RFM_CS_PIN = 10;
 const int wakeUpPin = 3;
+// Setup: ATMega 328p with a 8MHz internal clock(BOD disabled, LTO disabled) + SX1278 LoRa Module + OLED Display
+// What happens:  The chip goes into sleep mode. It gets waken up by a transmission just ONCE, writes on the OLED screen 
+//                and that message does not get read (if(rf95.available() is not true).
+//                After that, the chip goes back into sleep mode and cannot be waken up by a transmission at all.
+//                I tried putting rf95.available() directly under the powerDown command in line 58. It does not fix the issue.
+//                I tried using both interrupt pins on my ATMega328p chip, D2 and D3. It does not matter.
+//                I tried removing the OLED, nothing happens.
 
 RH_RF95 rf95(RFM_CS_PIN,RFM_INT_PIN);
 U8X8_SH1106_128X64_NONAME_HW_I2C u8x8(/* reset=*/ U8X8_PIN_NONE);
